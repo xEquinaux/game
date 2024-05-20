@@ -160,11 +160,11 @@ namespace game
          return false;
       }
 
-      private new bool KeyDown(Key k)
+      private bool KeyDown(Key k)
       {
          return Keyboard.PrimaryDevice.IsKeyDown(k);
       }
-      private new bool KeyUp(Key k)
+      private bool KeyUp(Key k)
       {
          return Keyboard.PrimaryDevice.IsKeyUp(k);
       }

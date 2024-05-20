@@ -63,7 +63,6 @@ namespace FoundationR.Lib
       protected static RewBatch _rewBatch;
       public static IntPtr HDC, HWND, Handle;
       public Stopwatch watch = new Stopwatch();
-      internal static IList<Keys> Keyboard = new List<Keys>();
       internal static bool MouseLeft;
       static IntPtr handle;
 

@@ -5,18 +5,17 @@ using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.IO;
+using System.IO;                     
+using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Security.Policy;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
 using Color = System.Drawing.Color;
 using MessageBox = System.Windows.Forms.MessageBox;
@@ -29,6 +28,7 @@ using FoundationR.Rew;
 using FoundationR.Loader;
 using FoundationR.Ext;
 using FoundationR.Headers;
+using System.Threading.Tasks;
 
 namespace FoundationR.Headers
 {
@@ -148,7 +148,7 @@ namespace FoundationR.Rew
       static extern void Direct2D_End();
 
 
-      public static RenderOption renderOption = RenderOption.Direct2D;
+      public static RenderOption renderOption = RenderOption.GDI;
       public virtual int stride => width * ((BitsPerPixel + 7) / 8);
       internal static int width, height;
       private static int oldWidth, oldHeight;
@@ -248,9 +248,9 @@ namespace FoundationR.Rew
          int h = Math.Min(rectangle.Height, Viewport.Height);
          byte[] result = null;
          if (Culling(rectangle.Width, rectangle.Height, rectangle.X, rectangle.Y))
-               result = CropARGBImage(image.GetPixels().Recolor(Convert(color)), image.Width, image.Height, rectangle.X, rectangle.Y, out w, out h);
+               result = CropARGBImage(image.GetPixels()/*.Recolor(Convert(color))*/, image.Width, image.Height, rectangle.X, rectangle.Y, out w, out h);
          else 
-               result = image.GetPixels().Recolor(Convert(color));
+               result = image.GetPixels();//.Recolor(Convert(color));
          if (result == null)
                return;
          if (renderOption == RenderOption.Direct2D)
@@ -282,9 +282,9 @@ namespace FoundationR.Rew
          int h = Math.Min(image.Height, Viewport.Height);
          byte[] result = null;
          if (Culling(image.Width, image.Height, x, y))
-               result = CropARGBImage(image.GetPixels().Recolor(Convert(color)), image.Width, image.Height, x, y, out w, out h);
+               result = CropARGBImage(image.GetPixels()/*.Recolor(Convert(color))*/, image.Width, image.Height, x, y, out w, out h);
          else
-               result = image.GetPixels().Recolor(Convert(color));
+               result = image.GetPixels();//.Recolor(Convert(color));
          if (result == null)
                return; 
          if (renderOption == RenderOption.Direct2D)
@@ -292,7 +292,7 @@ namespace FoundationR.Rew
                Direct2D_Draw(result, (uint)x, (uint)y, (uint)w, (uint)h);
          }
          else
-               CompositeImage(backBuffer, RewBatch.width, RewBatch.height, image.GetPixels().Recolor(Convert(color)), image.Width, image.Height, x - Viewport.X, y - Viewport.Y, x, y);
+               CompositeImage(backBuffer, RewBatch.width, RewBatch.height, image.GetPixels()/*.Recolor(Convert(color))*/, image.Width, image.Height, x - Viewport.X, y - Viewport.Y, x, y);
          result = null;
       }
       public virtual void Draw(byte[] image, int x, int y, int width, int height)
@@ -449,8 +449,6 @@ namespace FoundationR.Rew
       public virtual void CompositeImage(byte[] buffer, int bufferWidth, int bufferHeight, byte[] image, int imageWidth, int imageHeight, int x, int y, int origX, int origY, bool text = false)
       {
          if (buffer == null || image == null) return;
-         Core.Process_Pointer_Cast(x, y, bufferWidth, imageWidth, buffer, image);
-         return;
          Parallel.For(0, imageHeight, i =>
          {
                for (int j = 0; j < imageWidth; j++)
