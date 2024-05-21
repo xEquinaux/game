@@ -33,7 +33,7 @@ namespace game
       static void Main(string[] args)
       {
          game.Main m = null;
-         Thread t = new Thread(() => { (m = new Main()).Run(SurfaceType.WindowHandle_Loop, new Surface(StartX, StartY, Width, Height, Title, BitsPerPixel)); });
+         Thread t = new Thread(() => { (m = new Main()).Run(new Surface(StartX, StartY, Width, Height, Title, BitsPerPixel)); });
          t.SetApartmentState(ApartmentState.STA);
          t.Start();
          while (Console.ReadLine() != "exit");

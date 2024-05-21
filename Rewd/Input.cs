@@ -67,11 +67,11 @@ namespace FoundationR
             public int Y;
         }
 
-        public static Point GetCursorPosition()
+        public static System.Drawing.Point GetCursorPosition()
         {
             POINT cursorPosition;
             GetCursorPos(out cursorPosition);
-            return new Point(cursorPosition.X, cursorPosition.Y);
+            return new System.Drawing.Point(cursorPosition.X, cursorPosition.Y);
         }
     }
 

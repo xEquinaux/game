@@ -103,7 +103,10 @@ namespace FoundationR.Lib
                     window.form.Refresh();
                     goto START;
                 }
-                Direct2D_InitEx(handle = window.form.Handle, (uint)window.Width, (uint)window.Height);
+                if (RewBatch.renderOption == RenderOption.Direct2D)
+                { 
+                    Direct2D_InitEx(handle = window.form.Handle, (uint)window.Width, (uint)window.Height);
+                }
             }
             this.RegisterHooks(window.form);
             LoadResourcesEvent?.Invoke();
@@ -286,7 +289,7 @@ namespace FoundationR.Lib
          this.BitsPerPixel = bitsPerPixel;
          form = default;
       }
-      public string? Title;
+      public string Title;
       public int Width, Height;
       public int X, Y;
       public int BitsPerPixel;
