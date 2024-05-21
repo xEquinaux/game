@@ -90,7 +90,7 @@ namespace FoundationR.Lib
       public virtual void ClearInput()
       { 
       }
-      internal void Run(Surface window)
+      public void Run(Surface window)
         {
             window.form = new SurfaceForm(window);
             _rewBatch = new RewBatch(window.Width, window.Height, window.BitsPerPixel);
