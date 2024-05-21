@@ -29,6 +29,7 @@ using FoundationR.Loader;
 using FoundationR.Ext;
 using FoundationR.Headers;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 
 namespace FoundationR.Headers
 {
@@ -472,7 +473,7 @@ namespace FoundationR.Rew
                   );
                   if (back.A == 0 && fore.A == 0)
                      continue;
-
+                  
                   if (fore.A < 255 && !text)
                   {
                      Color blend = fore.color.Blend(back.color, 0.15d);

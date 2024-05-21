@@ -28,7 +28,7 @@ namespace game
       static int Width => 640;
       static int Height => 480;
       static int BitsPerPixel => 32;
-      static string Title = "Foundation_GameTemplate";
+      static string Title = "Game";
         
       static void Main(string[] args)
       {
